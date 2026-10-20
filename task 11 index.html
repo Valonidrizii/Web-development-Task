@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="sq">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detyra 11 — Llogaritësi i bakshishit</title>
+    <link rel="stylesheet" href="task%2011%20.css" />
+  </head>
+  <body>
+    <main class="card">
+      <p class="task-label">DETYRA 11 · JAVASCRIPT</p>
+      <h1>Llogaritësi i bakshishit</h1>
+      <p class="description">Llogarit shumën totale dhe sa paguan secili.</p>
+      <form id="tip-form" novalidate>
+        <label for="bill">Shuma e faturës (€)</label>
+        <input id="bill" name="bill" type="number" min="0" step="0.01" required />
+        <label for="tip">Bakshishi (%)</label>
+        <input id="tip" name="tip" type="number" min="0" step="0.01" required />
+        <label for="people">Numri i personave</label>
+        <input id="people" name="people" type="number" min="1" step="1" required />
+        <p id="error" class="error" role="alert"></p>
+        <div class="actions">
+          <button type="submit">Llogarit</button>
+          <button type="reset" class="secondary">Pastro</button>
+        </div>
+      </form>
+      <div role="status">
+        <section id="results" class="result" aria-label="Rezultati" hidden>
+          <p>Totali me bakshish: <strong id="total"></strong></p>
+          <p>Për person: <strong id="per-person"></strong></p>
+        </section>
+      </div>
+    </main>
+    <script>
+      const form = document.querySelector("#tip-form");
+      const billInput = document.querySelector("#bill");
+      const tipInput = document.querySelector("#tip");
+      const peopleInput = document.querySelector("#people");
+      const error = document.querySelector("#error");
+      const results = document.querySelector("#results");
+      const currency = new Intl.NumberFormat("sq-AL", {
+        style: "currency", currency: "EUR", minimumFractionDigits: 2,
+      });
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        error.textContent = "";
+        results.hidden = true;
+        const bill = billInput.valueAsNumber;
+        const tip = tipInput.valueAsNumber;
+        const people = peopleInput.valueAsNumber;
+
+        if (!Number.isFinite(bill) || bill < 0) {
+          error.textContent = "Shkruaj një shumë fature prej 0 ose më shumë.";
+          billInput.focus();
+          return;
+        }
+        if (!Number.isFinite(tip) || tip < 0) {
+          error.textContent = "Shkruaj një përqindje bakshishi prej 0 ose më shumë.";
+          tipInput.focus();
+          return;
+        }
+        if (!Number.isInteger(people) || people < 1) {
+          error.textContent = "Numri i personave duhet të jetë numër i plotë, të paktën 1.";
+          peopleInput.focus();
+          return;
+        }
+
+        const total = bill + bill * tip / 100;
+        if (!Number.isFinite(total)) {
+          error.textContent = "Vlerat janë shumë të mëdha. Provo shuma më të vogla.";
+          return;
+        }
+        document.querySelector("#total").textContent = currency.format(total);
+        document.querySelector("#per-person").textContent = currency.format(total / people);
+        results.hidden = false;
+      });
+
+      form.addEventListener("reset", function () {
+        error.textContent = "";
+        results.hidden = true;
+      });
+    </script>
+  </body>
+</html>
