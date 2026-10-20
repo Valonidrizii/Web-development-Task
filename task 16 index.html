@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="sq">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detyra 16 — Validimi i formularit</title>
+    <link rel="stylesheet" href="task%2016%20.css" />
+  </head>
+  <body>
+    <main class="card">
+      <p class="task-label">DETYRA 16 · JAVASCRIPT</p>
+      <h1>Krijo një llogari</h1>
+      <p class="description">Formular demonstrues. Të gjitha fushat janë të detyrueshme.</p>
+      <form id="signup-form" novalidate>
+        <label for="name">Emri</label>
+        <input id="name" name="name" autocomplete="name" required aria-describedby="name-error" />
+        <p id="name-error" class="field-error"></p>
+
+        <label for="email">Email-i</label>
+        <input id="email" name="email" type="email" autocomplete="email" required aria-describedby="email-error" />
+        <p id="email-error" class="field-error"></p>
+
+        <label for="password">Fjalëkalimi</label>
+        <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required aria-describedby="password-hint password-error" />
+        <p id="password-hint" class="hint">Përdor të paktën 8 karaktere.</p>
+        <p id="password-error" class="field-error"></p>
+
+        <label for="confirmation">Përsërit fjalëkalimin</label>
+        <input id="confirmation" name="confirmation" type="password" autocomplete="new-password" required aria-describedby="confirmation-error" />
+        <p id="confirmation-error" class="field-error"></p>
+
+        <button type="submit">Regjistrohu</button>
+        <p id="form-status" role="status"></p>
+      </form>
+    </main>
+    <script>
+      const form = document.querySelector("#signup-form");
+      const nameInput = document.querySelector("#name");
+      const emailInput = document.querySelector("#email");
+      const passwordInput = document.querySelector("#password");
+      const confirmationInput = document.querySelector("#confirmation");
+      const status = document.querySelector("#form-status");
+      const fields = [nameInput, emailInput, passwordInput, confirmationInput];
+
+      function showFieldError(field, message) {
+        document.getElementById(field.id + "-error").textContent = message;
+        field.setAttribute("aria-invalid", String(Boolean(message)));
+      }
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        status.textContent = "";
+        fields.forEach(function (field) { showFieldError(field, ""); });
+
+        if (!nameInput.value.trim()) showFieldError(nameInput, "Shkruaj emrin tënd.");
+        if (!emailInput.value.trim()) showFieldError(emailInput, "Shkruaj email-in tënd.");
+        else if (emailInput.validity.typeMismatch) showFieldError(emailInput, "Shkruaj një adresë email-i të vlefshme.");
+
+        if (!passwordInput.value) showFieldError(passwordInput, "Shkruaj një fjalëkalim.");
+        else if (passwordInput.value.length < 8) showFieldError(passwordInput, "Fjalëkalimi duhet të ketë të paktën 8 karaktere.");
+
+        if (!confirmationInput.value) showFieldError(confirmationInput, "Përsërit fjalëkalimin.");
+        else if (confirmationInput.value !== passwordInput.value) showFieldError(confirmationInput, "Fjalëkalimet nuk përputhen.");
+
+        const invalidFields = fields.filter(function (field) {
+          return field.getAttribute("aria-invalid") === "true";
+        });
+        if (invalidFields.length > 0) {
+          status.textContent = "Kontrollo fushat e shënuara më sipër.";
+          invalidFields[0].focus();
+          return;
+        }
+
+        // Nuk dërgojmë dhe nuk ruajmë fjalëkalime.
+        form.reset();
+        status.textContent = "Formulari u plotësua me sukses! Ky është vetëm një demonstrim.";
+      });
+    </script>
+  </body>
+</html>
