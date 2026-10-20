@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="sq">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detyra 19 — Produktet nga JSON</title>
+    <link rel="stylesheet" href="task%2019%20.css" />
+  </head>
+  <body>
+    <main class="card wide">
+      <p class="task-label">DETYRA 19 · JAVASCRIPT</p>
+      <h1>Produktet tona</h1>
+      <p class="description">Një koleksion i vogël për tavolinën tënde të punës.</p>
+      <p id="load-status" class="result" role="status">Duke ngarkuar produktet…</p>
+      <ul id="products" class="grid" aria-label="Produktet" aria-busy="true"></ul>
+      <button id="retry" type="button" hidden>Riprovo</button>
+    </main>
+    <script>
+      const productList = document.querySelector("#products");
+      const loadStatus = document.querySelector("#load-status");
+      const retryButton = document.querySelector("#retry");
+      // Për të provuar gabimin, ndrysho përkohësisht emrin e skedarit.
+      const dataPath = "products.json";
+      const currency = new Intl.NumberFormat("sq-AL", { style: "currency", currency: "EUR" });
+
+      async function loadProducts() {
+        productList.replaceChildren();
+        productList.setAttribute("aria-busy", "true");
+        loadStatus.textContent = "Duke ngarkuar produktet…";
+        loadStatus.classList.remove("error");
+        retryButton.disabled = true;
+        retryButton.hidden = true;
+
+        try {
+          const response = await fetch(dataPath, { cache: "no-store" });
+          if (!response.ok) throw new Error("HTTP " + response.status);
+          const products = await response.json();
+
+          if (!Array.isArray(products) || !products.every(function (product) {
+            return product && (typeof product.id === "number" || typeof product.id === "string") && typeof product.name === "string" && typeof product.price === "number" && Number.isFinite(product.price) && product.price >= 0;
+          })) {
+            throw new Error("Të dhënat nuk kanë formatin e pritur.");
+          }
+
+          if (products.length === 0) {
+            loadStatus.textContent = "Nuk ka produkte për momentin.";
+            retryButton.hidden = false;
+            return;
+          }
+
+          products.forEach(function (product) {
+            const item = document.createElement("li");
+            item.className = "item-card";
+            const name = document.createElement("h2");
+            name.textContent = product.name;
+            const price = document.createElement("p");
+            price.className = "price";
+            price.textContent = currency.format(product.price);
+            item.append(name, price);
+            productList.append(item);
+          });
+          loadStatus.textContent = "U ngarkuan " + products.length + " produkte.";
+        } catch {
+          loadStatus.classList.add("error");
+          loadStatus.textContent = window.location.protocol === "file:"
+            ? "Hape këtë detyrë përmes një serveri lokal, p.sh. Live Server, që të lexohen produktet."
+            : "Produktet nuk mund të ngarkoheshin. Provo përsëri.";
+          retryButton.hidden = false;
+        } finally {
+          productList.setAttribute("aria-busy", "false");
+          retryButton.disabled = false;
+        }
+      }
+
+      retryButton.addEventListener("click", loadProducts);
+      loadProducts();
+    </script>
+  </body>
+</html>
