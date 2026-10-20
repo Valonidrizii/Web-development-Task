@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="sq">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detyra 18 — Lista e detyrave</title>
+    <link rel="stylesheet" href="task%2018%20.css" />
+  </head>
+  <body>
+    <main class="card">
+      <p class="task-label">DETYRA 18 · JAVASCRIPT</p>
+      <h1>Detyrat e mia</h1>
+      <p class="description">Shto detyra, shënoji si të përfunduara dhe ruaji në këtë shfletues.</p>
+      <form id="todo-form" novalidate>
+        <label for="new-task">Detyrë e re</label>
+        <div class="input-row"><input id="new-task" name="task" maxlength="200" required aria-describedby="task-error" /><button type="submit">Shto</button></div>
+        <p id="task-error" class="error" role="alert"></p>
+      </form>
+      <div class="actions filter-buttons" role="group" aria-label="Filtro detyrat">
+        <button type="button" data-filter="all" aria-pressed="true">Të gjitha</button>
+        <button type="button" data-filter="active" aria-pressed="false">Aktive</button>
+        <button type="button" data-filter="completed" aria-pressed="false">Të përfunduara</button>
+      </div>
+      <p id="task-count" class="muted" role="status"></p>
+      <ul id="task-list" class="task-list"></ul>
+      <p id="empty" class="result">Lista është bosh. Shto detyrën tënde të parë.</p>
+      <p id="storage-status" class="error" role="status"></p>
+    </main>
+    <script>
+      const storageKey = "task-18-todos";
+      const form = document.querySelector("#todo-form");
+      const taskInput = document.querySelector("#new-task");
+      const taskList = document.querySelector("#task-list");
+      const filterButtons = document.querySelectorAll("[data-filter]");
+      const storageStatus = document.querySelector("#storage-status");
+      let tasks = [];
+      let activeFilter = "all";
+
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || "[]");
+        if (Array.isArray(saved)) {
+          tasks = saved.filter(function (task) {
+            return task && typeof task.id === "string" && typeof task.text === "string" && task.text.trim() && typeof task.completed === "boolean";
+          });
+        }
+      } catch {
+        storageStatus.textContent = "Lista e ruajtur nuk mund të lexohet. Mund të fillosh një listë të re.";
+      }
+
+      function saveTasks() {
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(tasks));
+          storageStatus.textContent = "";
+        } catch {
+          storageStatus.textContent = "Ruajtja lokale nuk është e disponueshme. Ndryshimet do të humbasin pas rifreskimit.";
+        }
+      }
+
+      function renderTasks() {
+        taskList.replaceChildren();
+        const visibleTasks = tasks.filter(function (task) {
+          if (activeFilter === "active") return !task.completed;
+          if (activeFilter === "completed") return task.completed;
+          return true;
+        });
+
+        visibleTasks.forEach(function (task) {
+          const item = document.createElement("li");
+          item.className = "todo-item";
+          const label = document.createElement("label");
+          label.className = "todo-label";
+          const checkbox = document.createElement("input");
+          checkbox.id = "task-" + task.id;
+          checkbox.type = "checkbox";
+          checkbox.checked = task.completed;
+          const text = document.createElement("span");
+          // Teksti i përdoruesit shfaqet si tekst, edhe nëse përmban HTML.
+          text.textContent = task.text;
+          if (task.completed) text.classList.add("completed");
+          checkbox.addEventListener("change", function () {
+            task.completed = checkbox.checked;
+            saveTasks();
+            renderTasks();
+            const updatedCheckbox = document.getElementById(checkbox.id);
+            if (updatedCheckbox) updatedCheckbox.focus();
+            else document.querySelector('[data-filter="' + activeFilter + '"]').focus();
+          });
+          label.append(checkbox, text);
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.className = "secondary";
+          remove.textContent = "Fshi";
+          remove.setAttribute("aria-label", "Fshi detyrën: " + task.text);
+          remove.addEventListener("click", function () {
+            tasks = tasks.filter(function (entry) { return entry.id !== task.id; });
+            saveTasks();
+            renderTasks();
+            taskInput.focus();
+          });
+          item.append(label, remove);
+          taskList.append(item);
+        });
+        const activeCount = tasks.filter(function (task) { return !task.completed; }).length;
+        document.querySelector("#task-count").textContent = "Gjithsej: " + tasks.length + " · Aktive: " + activeCount;
+        const empty = document.querySelector("#empty");
+        empty.hidden = visibleTasks.length > 0;
+        empty.textContent = tasks.length === 0 ? "Lista është bosh. Shto detyrën tënde të parë." : "Nuk ka detyra për këtë filtër.";
+      }
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const text = taskInput.value.trim();
+        const error = document.querySelector("#task-error");
+        if (!text) {
+          error.textContent = "Shkruaj një detyrë; hapësirat bosh nuk mjaftojnë.";
+          taskInput.focus();
+          return;
+        }
+        error.textContent = "";
+        tasks.push({ id: crypto.randomUUID(), text: text, completed: false });
+        taskInput.value = "";
+        // Shfaqim të gjitha që detyra e saposhtuar të jetë e dukshme.
+        activeFilter = "all";
+        updateFilterButtons();
+        saveTasks();
+        renderTasks();
+        taskInput.focus();
+      });
+
+      function updateFilterButtons() {
+        filterButtons.forEach(function (button) {
+          button.setAttribute("aria-pressed", String(button.dataset.filter === activeFilter));
+        });
+      }
+      filterButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          activeFilter = button.dataset.filter;
+          updateFilterButtons();
+          renderTasks();
+        });
+      });
+      renderTasks();
+    </script>
+  </body>
+</html>
