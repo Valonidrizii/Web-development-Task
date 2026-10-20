@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="sq">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detyra 17 — Kërko në ekip</title>
+    <link rel="stylesheet" href="task%2017%20.css" />
+  </head>
+  <body>
+    <main class="card wide">
+      <p class="task-label">DETYRA 17 · JAVASCRIPT</p>
+      <h1>Njihu me ekipin</h1>
+      <p class="description">Kërko sipas emrit dhe filtro sipas rolit. Të gjithë anëtarët janë imagjinarë.</p>
+      <div class="filters">
+        <div><label for="search">Kërko emrin</label><input id="search" type="search" placeholder="P.sh. Arta" /></div>
+        <div><label for="role">Roli</label><select id="role"><option value="">Të gjitha rolet</option></select></div>
+      </div>
+      <button id="clear" type="button" class="secondary">Pastro filtrat</button>
+      <p id="result-count" class="muted" role="status"></p>
+      <ul id="members" class="grid"></ul>
+      <p id="empty" class="result" hidden>Nuk u gjet asnjë anëtar. Provo një emër ose rol tjetër.</p>
+    </main>
+    <script>
+      const members = [
+        { name: "Arta Krasniqi", role: "Zhvillues/e" },
+        { name: "Dion Berisha", role: "Dizajner/e" },
+        { name: "Elira Gashi", role: "Testues/e" },
+        { name: "Luan Hoxha", role: "Zhvillues/e" },
+        { name: "Nora Dervishi", role: "Menaxher/e" },
+        { name: "Blerim Kola", role: "Testues/e" },
+        { name: "Era Shala", role: "Dizajner/e" },
+        { name: "Arben Leka", role: "Zhvillues/e" },
+      ];
+      const searchInput = document.querySelector("#search");
+      const roleSelect = document.querySelector("#role");
+      const memberList = document.querySelector("#members");
+
+      const roles = [...new Set(members.map(function (member) { return member.role; }))];
+      roles.forEach(function (role) {
+        const option = document.createElement("option");
+        option.value = role;
+        option.textContent = role;
+        roleSelect.append(option);
+      });
+
+      function renderMembers() {
+        const search = searchInput.value.trim().toLocaleLowerCase("sq");
+        const filtered = members.filter(function (member) {
+          const matchesName = member.name.toLocaleLowerCase("sq").includes(search);
+          const matchesRole = !roleSelect.value || member.role === roleSelect.value;
+          return matchesName && matchesRole;
+        });
+
+        memberList.replaceChildren();
+        filtered.forEach(function (member) {
+          const item = document.createElement("li");
+          item.className = "item-card";
+          const name = document.createElement("h2");
+          name.textContent = member.name;
+          const role = document.createElement("p");
+          role.className = "muted";
+          role.textContent = member.role;
+          item.append(name, role);
+          memberList.append(item);
+        });
+        document.querySelector("#result-count").textContent = "Rezultate: " + filtered.length + " / " + members.length;
+        document.querySelector("#empty").hidden = filtered.length !== 0;
+      }
+
+      searchInput.addEventListener("input", renderMembers);
+      roleSelect.addEventListener("change", renderMembers);
+      document.querySelector("#clear").addEventListener("click", function () {
+        searchInput.value = "";
+        roleSelect.value = "";
+        renderMembers();
+        searchInput.focus();
+      });
+      renderMembers();
+    </script>
+  </body>
+</html>
