@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+  <head>
+    <title>Contact Form</title>
+    <link rel="stylesheet" href="style 04.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Contact Us</h1>
+    </header>
+
+    <main>
+      <form>
+        <div>
+          <label for="name">Name (required)</label>
+          <input type="text" id="name" name="name" required />
+        </div>
+
+        <div>
+          <label for="email">Email (required)</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+        <div>
+  <label for="subject">Subject (required)</label>
+  <select id="subject" name="subject" required>
+    <option value="">Choose a subject</option>
+    <option value="general">General question</option>
+    <option value="support">Support</option>
+    <option value="feedback">Feedback</option>
+  </select>
+</div>
+
+<div>
+  <label for="message">Message (required)</label>
+  <textarea
+    id="message"
+    name="message"
+    rows="5"
+    required
+  ></textarea>
+</div>
+<div class="consent">
+  <input
+    type="checkbox"
+    id="consent"
+    name="consent"
+    value="accepted"
+    required
+  />
+  <label for="consent">
+    I agree to be contacted about my message (required).
+  </label>
+</div>
+
+<button type="submit">Send message</button>
+
+<p>This is a demo form. No message will be sent.</p>
+      </form>
+    </main>
+  </body>
+</html>

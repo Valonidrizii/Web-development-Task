@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+  <head>
+    <title>Counter</title>
+    <link rel="stylesheet" href="style 09.css" />
+    <script src="script 09.js" defer></script>
+  </head>
+
+  <body>
+    <header>
+      <h1>Counter</h1>
+      <p>Increase, decrease or reset the number.</p>
+    </header>
+
+    <main class="counter">
+      <div class="counter-controls">
+        <button
+          type="button"
+          id="decrease"
+          aria-label="Decrease counter"
+          disabled
+        >
+          −
+        </button>
+
+        <p id="count" aria-live="polite" aria-atomic="true">0</p>
+
+        <button
+          type="button"
+          id="increase"
+          aria-label="Increase counter"
+        >
+          +
+        </button>
+      </div>
+
+      <button type="button" id="reset">Reset</button>
+      <p class="hint">The counter cannot go below zero.</p>
+    </main>
+  </body>
+</html>
