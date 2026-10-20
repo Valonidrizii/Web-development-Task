@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="sq">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detyra 15 — Dialog konfirmimi</title>
+    <link rel="stylesheet" href="task%2015%20.css" />
+  </head>
+  <body>
+    <main class="card">
+      <p class="task-label">DETYRA 15 · JAVASCRIPT</p>
+      <h1>Konfirmo veprimin</h1>
+      <p class="description">Hap dialogun dhe zgjidh nëse dëshiron të vazhdosh.</p>
+      <button id="open-dialog" type="button">Hap dialogun</button>
+      <p id="message" class="result" role="status">Asnjë veprim nuk është konfirmuar ende.</p>
+    </main>
+    <dialog id="confirmation-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-description">
+      <h2 id="dialog-title">Dëshiron të vazhdosh?</h2>
+      <p id="dialog-description">Ky është një demonstrim. Konfirmimi do të përditësojë mesazhin në faqe.</p>
+      <form method="dialog" class="actions">
+        <button type="submit" value="cancel" class="secondary" autofocus>Anulo</button>
+        <button type="submit" value="confirm">Konfirmo</button>
+      </form>
+    </dialog>
+    <script>
+      const openButton = document.querySelector("#open-dialog");
+      const dialog = document.querySelector("#confirmation-dialog");
+      const message = document.querySelector("#message");
+
+      openButton.addEventListener("click", function () {
+        // Pastrojmë rezultatin e hapjes së mëparshme.
+        dialog.returnValue = "";
+        dialog.showModal();
+      });
+
+      dialog.addEventListener("close", function () {
+        if (dialog.returnValue === "confirm") {
+          message.textContent = "Veprimi u konfirmua me sukses.";
+        }
+        openButton.focus();
+      });
+    </script>
+  </body>
+</html>
