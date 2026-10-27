@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detyra 42 — Tabela e shënimeve</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <nav class="topbar" aria-label="Detyrat"><a href="../index.html">← Të gjitha detyrat</a><span><a href="../task-41/index.html">← Detyra 41</a> · <a href="../task-43/index.html">Detyra 43 →</a></span></nav>
+  <main class="page" id="content">
+    <p class="task-label">Detyra 42 · HTML / CSS / JavaScript</p>
+    <h1>Tabela e shënimeve</h1>
+    <p class="description">Krijo, ndrysho dhe fshi shënime. Ato ruhen në këtë shfletues.</p>
+    
+<form id="note-form" novalidate><div><label for="title">Titulli</label><input id="title" required maxlength="120"></div><div><label for="body">Shënimi</label><textarea id="body" maxlength="10000"></textarea></div><div class="actions"><button id="save" type="submit">Shto shënimin</button><button id="cancel" type="button" class="secondary" hidden>Anulo ndryshimet</button></div></form><p id="message" class="status" role="status"></p><p id="storage-status" class="error" role="status"></p><h2>Shënimet e tua</h2><p id="empty">Ende pa shënime.</p><ul id="notes" class="list"></ul>
+  </main>
+  <footer class="footer">Praktikë frontend · Valon Idrizi · Detyrat 21–50</footer>
+</body>
+</html>
