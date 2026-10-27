@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+  <head>
+    <title>Detyra 10 — Numëruesi i karaktereve</title>
+    <link rel="stylesheet" href="task 10 .css" />
+  </head>
+  <body>
+    <main class="card">
+      <p class="task-label">DETYRA 10 · JAVASCRIPT</p>
+      <h1>Shkruaj një mesazh</h1>
+      <p class="description">
+        Ke në dispozicion 200 karaktere. Numëruesi përditësohet ndërsa shkruan.
+      </p>
+
+      <label for="message">Mesazhi yt</label>
+      <textarea
+        id="message"
+        name="message"
+        rows="7"
+        maxlength="200"
+        placeholder="Fillo të shkruash këtu…"
+        aria-describedby="character-count warning"
+      ></textarea>
+
+      <p id="character-count" class="character-count" role="status">
+        Karaktere të mbetura: <span id="remaining-count">200</span> / 200
+      </p>
+      <p id="warning" class="warning" hidden>
+        Po i afrohesh kufirit prej 200 karakteresh.
+      </p>
+    </main>
+
+    <script>
+      const messageInput = document.querySelector("#message");
+      const remainingCount = document.querySelector("#remaining-count");
+      const characterCount = document.querySelector("#character-count");
+      const warning = document.querySelector("#warning");
+
+      function updateCharacterCount() {
+        // Kufirin e lexojmë nga atributi maxlength në HTML.
+        const maxCharacters = messageInput.maxLength;
+        const usedCharacters = messageInput.value.length;
+        const remainingCharacters = maxCharacters - usedCharacters;
+
+        remainingCount.textContent = remainingCharacters;
+
+        // Paralajmërimi shfaqet kur mbeten 20 ose më pak karaktere.
+        const isNearLimit = remainingCharacters <= 20;
+        characterCount.classList.toggle("is-warning", isNearLimit);
+        warning.hidden = !isNearLimit;
+      }
+
+      // "input" reagon kur shkruajmë, ngjisim ose fshijmë tekst.
+      messageInput.addEventListener("input", updateCharacterCount);
+
+      updateCharacterCount();
+    </script>
+  </body>
+</html>

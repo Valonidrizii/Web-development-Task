@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="sq">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detyra 12 — Ndërrimi i temës</title>
+    <link rel="stylesheet" href="task%2012%20.css" />
+  </head>
+  <body>
+    <main class="card">
+      <p class="task-label">DETYRA 12 · JAVASCRIPT</p>
+      <h1>Zgjidh pamjen tënde</h1>
+      <p class="description">Ndërro temën e faqes. Zgjedhja ruhet në këtë shfletues.</p>
+      <button id="theme-button" type="button" aria-pressed="false">Aktivizo temën e errët</button>
+      <section class="result" aria-labelledby="preview-title">
+        <h2 id="preview-title">Një pamje e re, e njëjta përmbajtje</h2>
+        <p>Ngjyrat e sfondit, tekstit dhe butonit përshtaten me temën e zgjedhur.</p>
+      </section>
+      <p id="theme-status" class="muted" role="status"></p>
+    </main>
+    <script>
+      const themeButton = document.querySelector("#theme-button");
+      const themeStatus = document.querySelector("#theme-status");
+      const storageKey = "task-12-theme";
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
+      let savedTheme = null;
+
+      try {
+        savedTheme = localStorage.getItem(storageKey);
+      } catch {
+        // Tema punon edhe kur shfletuesi nuk lejon ruajtjen lokale.
+      }
+
+      function applyTheme(theme) {
+        const isDark = theme === "dark";
+        document.documentElement.classList.toggle("dark-theme", isDark);
+        themeButton.textContent = isDark ? "Aktivizo temën e çelët" : "Aktivizo temën e errët";
+        themeButton.setAttribute("aria-pressed", String(isDark));
+        themeStatus.textContent = isDark ? "Tema aktuale: e errët." : "Tema aktuale: e çelët.";
+      }
+
+      const hasSavedTheme = savedTheme === "light" || savedTheme === "dark";
+      applyTheme(hasSavedTheme ? savedTheme : (systemTheme.matches ? "dark" : "light"));
+
+      themeButton.addEventListener("click", function () {
+        const nextTheme = document.documentElement.classList.contains("dark-theme") ? "light" : "dark";
+        applyTheme(nextTheme);
+        savedTheme = nextTheme;
+        try {
+          localStorage.setItem(storageKey, nextTheme);
+        } catch {
+          themeStatus.textContent += " Ruajtja lokale nuk është e disponueshme.";
+        }
+      });
+
+      systemTheme.addEventListener("change", function (event) {
+        if (savedTheme !== "light" && savedTheme !== "dark") {
+          applyTheme(event.matches ? "dark" : "light");
+        }
+      });
+    </script>
+  </body>
+</html>

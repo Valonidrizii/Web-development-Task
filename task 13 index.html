@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="sq">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detyra 13 — Pyetje të shpeshta</title>
+    <link rel="stylesheet" href="task%2013%20.css" />
+  </head>
+  <body>
+    <main class="card">
+      <p class="task-label">DETYRA 13 · JAVASCRIPT</p>
+      <h1>Pyetje të shpeshta</h1>
+      <p class="description">Zgjidh një pyetje për të lexuar përgjigjen.</p>
+      <section class="faq" aria-label="Pyetje dhe përgjigje">
+        <article class="faq-item">
+          <h2><button type="button" id="question-1" aria-expanded="false" aria-controls="answer-1">Çfarë është HTML?</button></h2>
+          <div id="answer-1" role="region" aria-labelledby="question-1" hidden><p>HTML përcakton strukturën e faqes, si titujt, paragrafët, lidhjet dhe formularët.</p></div>
+        </article>
+        <article class="faq-item">
+          <h2><button type="button" id="question-2" aria-expanded="false" aria-controls="answer-2">Për çfarë përdoret CSS?</button></h2>
+          <div id="answer-2" role="region" aria-labelledby="question-2" hidden><p>CSS përcakton pamjen e faqes: ngjyrat, madhësitë, hapësirat dhe vendosjen e elementeve.</p></div>
+        </article>
+        <article class="faq-item">
+          <h2><button type="button" id="question-3" aria-expanded="false" aria-controls="answer-3">Çfarë bën JavaScript?</button></h2>
+          <div id="answer-3" role="region" aria-labelledby="question-3" hidden><p>JavaScript shton ndërveprim, përpunon veprimet e përdoruesit dhe përditëson përmbajtjen.</p></div>
+        </article>
+        <article class="faq-item">
+          <h2><button type="button" id="question-4" aria-expanded="false" aria-controls="answer-4">A më duhet ndonjë framework?</button></h2>
+          <div id="answer-4" role="region" aria-labelledby="question-4" hidden><p>Për këto detyra mjaftojnë HTML, CSS dhe JavaScript i thjeshtë.</p></div>
+        </article>
+        <article class="faq-item">
+          <h2><button type="button" id="question-5" aria-expanded="false" aria-controls="answer-5">Si mund ta përdor tastierën?</button></h2>
+          <div id="answer-5" role="region" aria-labelledby="question-5" hidden><p>Me Tab kalon te pyetjet. Me Enter ose Space hap dhe mbyll përgjigjen.</p></div>
+        </article>
+      </section>
+      <button id="close-all" class="secondary" type="button">Mbyll të gjitha</button>
+    </main>
+    <script>
+      const questionButtons = document.querySelectorAll(".faq-item button");
+
+      function closeAllAnswers() {
+        questionButtons.forEach(function (button) {
+          button.setAttribute("aria-expanded", "false");
+          document.getElementById(button.getAttribute("aria-controls")).hidden = true;
+        });
+      }
+
+      questionButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          const wasOpen = button.getAttribute("aria-expanded") === "true";
+          closeAllAnswers();
+          if (!wasOpen) {
+            button.setAttribute("aria-expanded", "true");
+            document.getElementById(button.getAttribute("aria-controls")).hidden = false;
+          }
+        });
+      });
+
+      document.querySelector("#close-all").addEventListener("click", closeAllAnswers);
+    </script>
+  </body>
+</html>

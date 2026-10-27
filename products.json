@@ -1,0 +1,8 @@
+[
+  { "id": 1, "name": "Fletore", "price": 5 },
+  { "id": 2, "name": "Stilolaps", "price": 2.5 },
+  { "id": 3, "name": "Filxhan", "price": 10 },
+  { "id": 4, "name": "Mbajtëse telefoni", "price": 12 },
+  { "id": 5, "name": "Çantë pëlhure", "price": 15 },
+  { "id": 6, "name": "Llambë tavoline", "price": 25 }
+]

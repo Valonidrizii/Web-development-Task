@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="sq">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detyra 20 — Shporta e blerjeve</title>
+    <link rel="stylesheet" href="task%2020%20.css" />
+  </head>
+  <body>
+    <main class="card wide">
+      <p class="task-label">DETYRA 20 · JAVASCRIPT</p>
+      <h1>Dyqani i vogël</h1>
+      <p class="description">Zgjidh produktet e tua. Shporta ruhet në këtë shfletues.</p>
+      <section aria-labelledby="products-title">
+        <h2 id="products-title">Produktet</h2>
+        <ul id="products" class="grid"></ul>
+      </section>
+      <section class="cart-section" aria-labelledby="cart-title">
+        <h2 id="cart-title">Shporta jote</h2>
+        <p id="empty" class="result">Shporta është bosh. Shto një produkt për të filluar.</p>
+        <ul id="cart" class="cart-list"></ul>
+        <div class="cart-summary" role="status">
+          <p>Artikuj: <strong id="item-count">0</strong></p>
+          <p>Totali: <strong id="cart-total">0,00 €</strong></p>
+        </div>
+      </section>
+      <p id="cart-status" role="status"></p>
+      <p id="storage-status" class="error" role="status"></p>
+    </main>
+    <script>
+      const products = [
+        { id: 1, name: "Filxhan", price: 10 },
+        { id: 2, name: "Fletore", price: 5 },
+        { id: 3, name: "Çantë pëlhure", price: 15 },
+        { id: 4, name: "Shishe uji", price: 20 },
+      ];
+      const storageKey = "task-20-cart";
+      const productList = document.querySelector("#products");
+      const cartList = document.querySelector("#cart");
+      const cartStatus = document.querySelector("#cart-status");
+      const storageStatus = document.querySelector("#storage-status");
+      const currency = new Intl.NumberFormat("sq-AL", { style: "currency", currency: "EUR" });
+      let cart = [];
+
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || "[]");
+        if (Array.isArray(saved)) {
+          saved.forEach(function (item) {
+            if (item && products.some(function (product) { return product.id === item.id; }) && Number.isInteger(item.quantity) && item.quantity >= 1 && item.quantity <= 99 && !cart.some(function (entry) { return entry.id === item.id; })) {
+              cart.push({ id: item.id, quantity: item.quantity });
+            }
+          });
+        }
+      } catch {
+        storageStatus.textContent = "Shporta e ruajtur nuk mund të lexohet. Mund të fillosh një shportë të re.";
+      }
+
+      function saveCart() {
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(cart));
+          storageStatus.textContent = "";
+        } catch {
+          storageStatus.textContent = "Ruajtja lokale nuk është e disponueshme. Ndryshimet do të humbasin pas rifreskimit.";
+        }
+      }
+
+      function renderCart() {
+        cartList.replaceChildren();
+        let itemCount = 0;
+        let total = 0;
+
+        cart.forEach(function (item) {
+          const product = products.find(function (entry) { return entry.id === item.id; });
+          itemCount += item.quantity;
+          total += product.price * item.quantity;
+
+          const row = document.createElement("li");
+          row.className = "cart-item";
+          const details = document.createElement("div");
+          const name = document.createElement("h3");
+          name.textContent = product.name;
+          const price = document.createElement("p");
+          price.className = "muted";
+          price.textContent = currency.format(product.price) + " / copë";
+          details.append(name, price);
+
+          const quantityLabel = document.createElement("label");
+          quantityLabel.className = "quantity-label";
+          quantityLabel.textContent = "Sasia";
+          const quantity = document.createElement("input");
+          quantity.id = "quantity-" + item.id;
+          quantity.type = "number";
+          quantity.min = "1";
+          quantity.max = "99";
+          quantity.step = "1";
+          quantity.value = item.quantity;
+          quantity.setAttribute("aria-label", "Sasia për " + product.name);
+          quantity.addEventListener("change", function () {
+            const nextQuantity = quantity.valueAsNumber;
+            if (!Number.isInteger(nextQuantity) || nextQuantity < 1 || nextQuantity > 99) {
+              quantity.value = item.quantity;
+              cartStatus.textContent = "Sasia duhet të jetë numër i plotë nga 1 deri në 99.";
+              return;
+            }
+            item.quantity = nextQuantity;
+            saveCart();
+            renderCart();
+            document.getElementById(quantity.id).focus();
+            cartStatus.textContent = "Sasia u përditësua për: " + product.name + ".";
+          });
+          quantityLabel.append(quantity);
+
+          const subtotal = document.createElement("strong");
+          subtotal.className = "subtotal";
+          subtotal.textContent = currency.format(product.price * item.quantity);
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.className = "secondary";
+          remove.textContent = "Hiq";
+          remove.setAttribute("aria-label", "Hiq " + product.name + " nga shporta");
+          remove.addEventListener("click", function () {
+            cart = cart.filter(function (entry) { return entry.id !== item.id; });
+            saveCart();
+            renderCart();
+            document.getElementById("add-" + item.id).focus();
+            cartStatus.textContent = product.name + " u hoq nga shporta.";
+          });
+          row.append(details, quantityLabel, subtotal, remove);
+          cartList.append(row);
+        });
+
+        document.querySelector("#empty").hidden = cart.length > 0;
+        document.querySelector("#item-count").textContent = itemCount;
+        document.querySelector("#cart-total").textContent = currency.format(total);
+      }
+
+      products.forEach(function (product) {
+        const card = document.createElement("li");
+        card.className = "item-card";
+        const name = document.createElement("h3");
+        name.textContent = product.name;
+        const price = document.createElement("p");
+        price.className = "price";
+        price.textContent = currency.format(product.price);
+        const add = document.createElement("button");
+        add.id = "add-" + product.id;
+        add.type = "button";
+        add.textContent = "Shto në shportë";
+        add.setAttribute("aria-label", "Shto " + product.name + " në shportë");
+        add.addEventListener("click", function () {
+          const existing = cart.find(function (item) { return item.id === product.id; });
+          if (existing && existing.quantity === 99) {
+            cartStatus.textContent = "Mund të shtosh maksimumi 99 copë për produkt.";
+            return;
+          }
+          if (existing) existing.quantity += 1;
+          else cart.push({ id: product.id, quantity: 1 });
+          saveCart();
+          renderCart();
+          cartStatus.textContent = product.name + " u shtua në shportë.";
+        });
+        card.append(name, price, add);
+        productList.append(card);
+      });
+
+      renderCart();
+    </script>
+  </body>
+</html>

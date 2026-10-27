@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="sq">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detyra 14 — Përmbajtje me skeda</title>
+    <link rel="stylesheet" href="task%2014%20.css" />
+  </head>
+  <body>
+    <main class="card">
+      <p class="task-label">DETYRA 14 · JAVASCRIPT</p>
+      <h1>Hapat e frontend-it</h1>
+      <p class="description">Zgjidh një skedë ose përdor shigjetat majtas dhe djathtas.</p>
+      <div class="tabs" role="tablist" aria-label="Teknologjitë frontend">
+        <button type="button" id="tab-html" role="tab" aria-controls="panel-html" aria-selected="true" tabindex="0">HTML</button>
+        <button type="button" id="tab-css" role="tab" aria-controls="panel-css" aria-selected="false" tabindex="-1">CSS</button>
+        <button type="button" id="tab-js" role="tab" aria-controls="panel-js" aria-selected="false" tabindex="-1">JavaScript</button>
+      </div>
+      <section id="panel-html" class="tab-panel" role="tabpanel" aria-labelledby="tab-html" tabindex="0">
+        <h2>Ndërto strukturën</h2>
+        <p>HTML organizon përmbajtjen me elemente si header, main, section dhe footer.</p>
+      </section>
+      <section id="panel-css" class="tab-panel" role="tabpanel" aria-labelledby="tab-css" tabindex="0" hidden>
+        <h2>Jepi pamje faqes</h2>
+        <p>CSS shton ngjyra, hapësira dhe paraqitje që përshtaten me ekranin.</p>
+      </section>
+      <section id="panel-js" class="tab-panel" role="tabpanel" aria-labelledby="tab-js" tabindex="0" hidden>
+        <h2>Shto ndërveprim</h2>
+        <p>JavaScript reagon ndaj klikimeve dhe tastierës për të ndërruar skedën aktive.</p>
+      </section>
+    </main>
+    <script>
+      const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+
+      function activateTab(selectedTab) {
+        tabs.forEach(function (tab) {
+          const isSelected = tab === selectedTab;
+          tab.setAttribute("aria-selected", String(isSelected));
+          tab.tabIndex = isSelected ? 0 : -1;
+          document.getElementById(tab.getAttribute("aria-controls")).hidden = !isSelected;
+        });
+        selectedTab.focus();
+      }
+
+      tabs.forEach(function (tab, index) {
+        tab.addEventListener("click", function () {
+          activateTab(tab);
+        });
+        tab.addEventListener("keydown", function (event) {
+          let nextIndex;
+          if (event.key === "ArrowRight") nextIndex = (index + 1) % tabs.length;
+          else if (event.key === "ArrowLeft") nextIndex = (index - 1 + tabs.length) % tabs.length;
+          else if (event.key === "Home") nextIndex = 0;
+          else if (event.key === "End") nextIndex = tabs.length - 1;
+          else return;
+
+          event.preventDefault();
+          activateTab(tabs[nextIndex]);
+        });
+      });
+    </script>
+  </body>
+</html>
