@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detyra 26 — Formular abonimi</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <nav class="topbar" aria-label="Detyrat"><a href="../index.html">← Të gjitha detyrat</a><span><a href="../task-25/index.html">← Detyra 25</a> · <a href="../task-27/index.html">Detyra 27 →</a></span></nav>
+  <main class="page" id="content">
+    <p class="task-label">Detyra 26 · HTML / CSS / JavaScript</p>
+    <h1>Formular abonimi</h1>
+    <p class="description">Zgjidh temat që të interesojnë. Abonimi është demonstrues.</p>
+    
+<form id="newsletter"><div><label for="email">Adresa e emailit</label><input id="email" type="email" name="email" autocomplete="email" required aria-describedby="email-help"><small id="email-help">Përdor formatin emri@shembull.com.</small></div><fieldset><legend>Temat e preferuara</legend><div class="two-cols"><label class="choice"><input type="checkbox" name="topic" value="HTML">HTML dhe qasshmëria</label><label class="choice"><input type="checkbox" name="topic" value="CSS">CSS dhe dizajni</label><label class="choice"><input type="checkbox" name="topic" value="JavaScript">JavaScript</label><label class="choice"><input type="checkbox" name="topic" value="Tools">Vegla pune</label></div></fieldset><button type="submit">Provo abonimin</button><p id="feedback" role="status"></p></form><aside class="panel"><h2>Shembuj të mesazheve</h2><p class="error">Gabim: adresa e emailit nuk është në formatin e duhur.</p><p class="success">Sukses: preferencat u regjistruan për demonstrim.</p></aside>
+  </main>
+  <footer class="footer">Praktikë frontend · Valon Idrizi · Detyrat 21–50</footer>
+</body>
+</html>
