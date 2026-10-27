@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detyra 35 — Numërim mbrapsht</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <nav class="topbar" aria-label="Detyrat"><a href="../index.html">← Të gjitha detyrat</a><span><a href="../task-34/index.html">← Detyra 34</a> · <a href="../task-36/index.html">Detyra 36 →</a></span></nav>
+  <main class="page" id="content">
+    <p class="task-label">Detyra 35 · HTML / CSS / JavaScript</p>
+    <h1>Numërim mbrapsht</h1>
+    <p class="description">Vendos një numër të plotë pozitiv sekondash, pastaj nis numërimin.</p>
+    
+<form id="timer-form" novalidate><div><label for="seconds">Kohëzgjatja në sekonda</label><input id="seconds" type="number" min="1" max="604800" step="1" value="60" aria-describedby="duration-help"><small id="duration-help">Nga 1 deri në 604800 sekonda (7 ditë). Gjatë matjes fusha kyçet; përdor Rivendos për një kohë të re.</small></div><div class="actions"><button id="start" type="submit">Nis</button><button id="pause" type="button" class="secondary" disabled>Pauzë</button><button id="reset" type="button" class="secondary">Rivendos</button></div></form><p id="display" class="clock" role="timer" aria-label="Koha e mbetur">01:00</p><p id="status" class="result" role="status">Gati për të filluar.</p>
+  </main>
+  <footer class="footer">Praktikë frontend · Valon Idrizi · Detyrat 21–50</footer>
+</body>
+</html>
