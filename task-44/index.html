@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detyra 44 — Gjurmues shpenzimesh</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <nav class="topbar" aria-label="Detyrat"><a href="../index.html">← Të gjitha detyrat</a><span><a href="../task-43/index.html">← Detyra 43</a> · <a href="../task-45/index.html">Detyra 45 →</a></span></nav>
+  <main class="page" id="content">
+    <p class="task-label">Detyra 44 · HTML / CSS / JavaScript</p>
+    <h1>Gjurmues shpenzimesh</h1>
+    <p class="description">Shto shpenzime në euro. Totali llogaritet nga shpenzimet e dukshme sipas filtrit.</p>
+    
+<form id="expense-form" novalidate><div><label for="description">Përshkrimi</label><input id="description" required maxlength="200"></div><div class="two-cols"><div><label for="amount">Shuma (€)</label><input id="amount" type="number" min="0.01" max="1000000" step="0.01" placeholder="12.50" required></div><div><label for="category">Kategoria</label><select id="category"><option>Ushqim</option><option>Transport</option><option>Mësim</option><option>Tjetër</option></select></div></div><button type="submit">Shto shpenzimin</button></form><p id="message" class="status" role="status"></p><div><label for="filter">Shfaq kategorinë</label><select id="filter"><option value="all">Të gjitha</option><option>Ushqim</option><option>Transport</option><option>Mësim</option><option>Tjetër</option></select></div><ul id="expenses" class="list"></ul><p id="empty">Nuk ka shpenzime për këtë filtër.</p><p id="total" class="result" role="status">Totali i të gjitha shpenzimeve: 0.00 €</p>
+  </main>
+  <footer class="footer">Praktikë frontend · Valon Idrizi · Detyrat 21–50</footer>
+</body>
+</html>
