@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detyra 43 — Menaxheri i lidhjeve</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <nav class="topbar" aria-label="Detyrat"><a href="../index.html">← Të gjitha detyrat</a><span><a href="../task-42/index.html">← Detyra 42</a> · <a href="../task-44/index.html">Detyra 44 →</a></span></nav>
+  <main class="page" id="content">
+    <p class="task-label">Detyra 43 · HTML / CSS / JavaScript</p>
+    <h1>Menaxheri i lidhjeve</h1>
+    <p class="description">Ruaj lidhje me titull. Pranohen vetëm adresa të plota http ose https.</p>
+    
+<form id="bookmark-form" novalidate><div><label for="title">Titulli i lidhjes</label><input id="title" required maxlength="150"></div><div><label for="url">Adresa URL</label><input id="url" type="url" placeholder="https://example.com" required></div><button type="submit">Shto lidhjen</button></form><p id="message" class="status" role="status"></p><p id="storage-status" class="error" role="status"></p><h2>Lidhjet e ruajtura</h2><p id="empty">Ende pa lidhje.</p><ul id="bookmarks" class="list"></ul>
+  </main>
+  <footer class="footer">Praktikë frontend · Valon Idrizi · Detyrat 21–50</footer>
+</body>
+</html>
